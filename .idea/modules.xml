@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/modbusserver.iml" filepath="$PROJECT_DIR$/modbusserver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/modbusdataservice.iml" filepath="$PROJECT_DIR$/modbusdataservice.iml" />
     </modules>
   </component>
 </project>
