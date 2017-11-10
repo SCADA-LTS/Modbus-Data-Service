@@ -4,6 +4,9 @@ import dataPoint.DataPoint;
 import json.JsonImport;
 import modbus.Modbus;
 
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Applicaiton {
@@ -11,6 +14,7 @@ public class Applicaiton {
         String ipAdress;
         int port;
         String fileName;
+        long now, delta, start;
 
         Scanner in = new Scanner(System.in);
 
@@ -25,9 +29,19 @@ public class Applicaiton {
         DataPoint[] dataPoints = json.getDataPoints(fileName);
         Modbus modbus = new Modbus(ipAdress, port);
 
+        start = System.currentTimeMillis();
         for (DataPoint dataPoint: dataPoints) {
-            System.out.println("\u001B[0mValue of point \"" + "\u001B[34m" + dataPoint.getName() + "\u001B[0m\": \u001B[32m" + modbus.getDataFromModbus(dataPoint.getOffset(), dataPoint.getBit()));
+            if(modbus.getDataFromModbus(dataPoint.getOffset(), dataPoint.getBit())!=-1){
+                now = System.currentTimeMillis();
+                System.out.println("\u001B[0mValue of point \"" + "\u001B[34m" + dataPoint.getName() + "\u001B[0m\": \u001B[32m" + modbus.getDataFromModbus(dataPoint.getOffset(), dataPoint.getBit()) + "\u001B[0m");
+                delta = System.currentTimeMillis()-now;
+                System.out.println("Operation time: " + delta + "ms");
+            }
         }
+        delta = System.currentTimeMillis()-start;
+        System.out.println("All data load time: " + delta + " ms");
+
+        modbus.setValueOfPoint(dataPoints[0], 13);
 
 
 
