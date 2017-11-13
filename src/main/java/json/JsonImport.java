@@ -1,6 +1,8 @@
 package json;
 
 import dataPoint.DataPoint;
+import modbus.Modbus;
+import org.apache.log4j.Logger;
 
 import javax.json.*;
 import java.io.FileInputStream;
@@ -10,12 +12,16 @@ import java.io.InputStream;
 
 public class JsonImport {
 
+    final static Logger logger = Logger.getLogger(JsonImport.class);
+
     InputStream fis = null;
 
     public DataPoint[] getDataPoints(String filename){
         try {
             fis = new FileInputStream(filename);
+            logger.info("File " + filename +  " opened");
         } catch (FileNotFoundException e) {
+            logger.error("Connot find file " + filename + " at default directory");
             e.printStackTrace();
         }
 
@@ -25,6 +31,7 @@ public class JsonImport {
 
         try {
             fis.close();
+            logger.error("Connot close the file:" + filename);
         } catch (IOException e) {
             e.printStackTrace();
         }

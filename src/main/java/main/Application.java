@@ -3,14 +3,18 @@ package main;
 import dataPoint.DataPoint;
 import json.JsonImport;
 import modbus.Modbus;
+import org.apache.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 
-public class Applicaiton {
+public class Application {
+    final static Logger logger = Logger.getLogger(Application.class);
+
     public static void main(String[] args){
+
         String ipAdress;
         int port;
         String fileName;
@@ -31,12 +35,10 @@ public class Applicaiton {
 
         start = System.currentTimeMillis();
         for (DataPoint dataPoint: dataPoints) {
-            if(modbus.getDataFromModbus(dataPoint.getOffset(), dataPoint.getBit())!=-1){
                 now = System.currentTimeMillis();
-                System.out.println("\u001B[0mValue of point \"" + "\u001B[34m" + dataPoint.getName() + "\u001B[0m\": \u001B[32m" + modbus.getDataFromModbus(dataPoint.getOffset(), dataPoint.getBit()) + "\u001B[0m");
+                modbus.getDataFromModbus(dataPoint);
                 delta = System.currentTimeMillis()-now;
                 System.out.println("Operation time: " + delta + "ms");
-            }
         }
         delta = System.currentTimeMillis()-start;
         System.out.println("All data load time: " + delta + " ms");
